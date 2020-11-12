@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище courseworkModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="contact">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="telephone" Type="bigint" />
+          <Property Name="adress" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="provider">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="contract_date" Type="date" />
+          <Property Name="contact" Type="int" />
+        </EntityType>
+        <EntityType Name="storage">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="name_type" Type="int" />
+          <Property Name="provider_name" Type="int" />
+          <Property Name="amount" Type="int" />
+        </EntityType>
+        <EntityType Name="type_product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__provider__contac__31EC6D26">
+          <End Role="contact" Type="Self.contact" Multiplicity="0..1" />
+          <End Role="provider" Type="Self.provider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="contact">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="provider">
+              <PropertyRef Name="contact" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__storage__name_ty__35BCFE0A">
+          <End Role="type_product" Type="Self.type_product" Multiplicity="0..1" />
+          <End Role="storage" Type="Self.storage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="type_product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="storage">
+              <PropertyRef Name="name_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__storage__provide__36B12243">
+          <End Role="provider" Type="Self.provider" Multiplicity="0..1" />
+          <End Role="storage" Type="Self.storage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="provider">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="storage">
+              <PropertyRef Name="provider_name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище courseworkModelContainer">
+          <EntitySet Name="contact" EntityType="Self.contact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="provider" EntityType="Self.provider" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="storage" EntityType="Self.storage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="type_product" EntityType="Self.type_product" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__provider__contac__31EC6D26" Association="Self.FK__provider__contac__31EC6D26">
+            <End Role="contact" EntitySet="contact" />
+            <End Role="provider" EntitySet="provider" />
+          </AssociationSet>
+          <AssociationSet Name="FK__storage__name_ty__35BCFE0A" Association="Self.FK__storage__name_ty__35BCFE0A">
+            <End Role="type_product" EntitySet="type_product" />
+            <End Role="storage" EntitySet="storage" />
+          </AssociationSet>
+          <AssociationSet Name="FK__storage__provide__36B12243" Association="Self.FK__storage__provide__36B12243">
+            <End Role="provider" EntitySet="provider" />
+            <End Role="storage" EntitySet="storage" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="courseworkModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="contact">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="telephone" Type="Int64" />
+          <Property Name="adress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="provider" Relationship="Self.FK__provider__contac__31EC6D26" FromRole="contact" ToRole="provider" />
+        </EntityType>
+        <EntityType Name="provider">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="contract_date" Type="DateTime" Precision="0" />
+          <Property Name="contact" Type="Int32" />
+          <NavigationProperty Name="contact1" Relationship="Self.FK__provider__contac__31EC6D26" FromRole="provider" ToRole="contact" />
+          <NavigationProperty Name="storage" Relationship="Self.FK__storage__provide__36B12243" FromRole="provider" ToRole="storage" />
+        </EntityType>
+        <EntityType Name="storage">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="name_type" Type="Int32" />
+          <Property Name="provider_name" Type="Int32" />
+          <Property Name="amount" Type="Int32" />
+          <NavigationProperty Name="provider" Relationship="Self.FK__storage__provide__36B12243" FromRole="storage" ToRole="provider" />
+          <NavigationProperty Name="type_product" Relationship="Self.FK__storage__name_ty__35BCFE0A" FromRole="storage" ToRole="type_product" />
+        </EntityType>
+        <EntityType Name="type_product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="storage" Relationship="Self.FK__storage__name_ty__35BCFE0A" FromRole="type_product" ToRole="storage" />
+        </EntityType>
+        <Association Name="FK__provider__contac__31EC6D26">
+          <End Role="contact" Type="Self.contact" Multiplicity="0..1" />
+          <End Role="provider" Type="Self.provider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="contact">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="provider">
+              <PropertyRef Name="contact" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__storage__provide__36B12243">
+          <End Role="provider" Type="Self.provider" Multiplicity="0..1" />
+          <End Role="storage" Type="Self.storage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="provider">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="storage">
+              <PropertyRef Name="provider_name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__storage__name_ty__35BCFE0A">
+          <End Role="type_product" Type="Self.type_product" Multiplicity="0..1" />
+          <End Role="storage" Type="Self.storage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="type_product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="storage">
+              <PropertyRef Name="name_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="coursework1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="contact" EntityType="Self.contact" />
+          <EntitySet Name="provider" EntityType="Self.provider" />
+          <EntitySet Name="storage" EntityType="Self.storage" />
+          <EntitySet Name="type_product" EntityType="Self.type_product" />
+          <AssociationSet Name="FK__provider__contac__31EC6D26" Association="Self.FK__provider__contac__31EC6D26">
+            <End Role="contact" EntitySet="contact" />
+            <End Role="provider" EntitySet="provider" />
+          </AssociationSet>
+          <AssociationSet Name="FK__storage__provide__36B12243" Association="Self.FK__storage__provide__36B12243">
+            <End Role="provider" EntitySet="provider" />
+            <End Role="storage" EntitySet="storage" />
+          </AssociationSet>
+          <AssociationSet Name="FK__storage__name_ty__35BCFE0A" Association="Self.FK__storage__name_ty__35BCFE0A">
+            <End Role="type_product" EntitySet="type_product" />
+            <End Role="storage" EntitySet="storage" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище courseworkModelContainer" CdmEntityContainer="coursework1">
+          <EntitySetMapping Name="contact">
+            <EntityTypeMapping TypeName="courseworkModel.contact">
+              <MappingFragment StoreEntitySet="contact">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="telephone" ColumnName="telephone" />
+                <ScalarProperty Name="adress" ColumnName="adress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="provider">
+            <EntityTypeMapping TypeName="courseworkModel.provider">
+              <MappingFragment StoreEntitySet="provider">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="contract_date" ColumnName="contract_date" />
+                <ScalarProperty Name="contact" ColumnName="contact" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="storage">
+            <EntityTypeMapping TypeName="courseworkModel.storage">
+              <MappingFragment StoreEntitySet="storage">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="name_type" ColumnName="name_type" />
+                <ScalarProperty Name="provider_name" ColumnName="provider_name" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="type_product">
+            <EntityTypeMapping TypeName="courseworkModel.type_product">
+              <MappingFragment StoreEntitySet="type_product">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
