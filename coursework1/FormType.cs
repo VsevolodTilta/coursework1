@@ -44,7 +44,7 @@ namespace coursework1
 			}
 			catch
 			{
-				MessageBox.Show("Неверные данные");
+				MessageBox.Show("Неверные данные\nИли такие данные существуют");
 			}
 		}
 		private void btnFind_Click(object sender, EventArgs e)
@@ -73,12 +73,19 @@ namespace coursework1
 				MessageBox.Show("Вы еще не нашли объект");
 				return;
 			}
+			try
+			{
+				type_product sd = DBconnect.coursework.type_product.Find(changable.id);
+				sd.type = tBName.Text;
+				DBconnect.coursework.SaveChanges();
 
-			type_product sd = DBconnect.coursework.type_product.Find(changable.id);
-			sd.type = tBName.Text;
-			DBconnect.coursework.SaveChanges();
-
-			changable = null;
+				changable = null;
+				MessageBox.Show("Успешное добавление ");
+			}
+			catch
+			{
+				MessageBox.Show("Неверные данные\nИли такие данные существуют");
+			}
 		}
 	}
 	

@@ -40,11 +40,10 @@ namespace coursework1
 				DBconnect.coursework.SaveChanges();
 				MessageBox.Show("Данные успешно добавлены");
 				Close();
-				
 			}
 			catch
 			{
-				MessageBox.Show("Неверные данные");
+				MessageBox.Show("Неверные данные\nИли такие данные существуют");
 			}
 		}
 		private void btnFind_Click(object sender, EventArgs e)
@@ -74,12 +73,19 @@ namespace coursework1
 				MessageBox.Show("Вы еще не нашли объект");
 				return;
 			}
+			try
+			{
+				contact sd = DBconnect.coursework.contact.Find(changable.id);
+				sd.telephone = int.Parse(tBNumber.Text);
+				DBconnect.coursework.SaveChanges();
 
-			contact sd = DBconnect.coursework.contact.Find(changable.id);
-			sd.telephone = int.Parse(tBNumber.Text);
-			DBconnect.coursework.SaveChanges();
-
-			changable = null;
+				changable = null;
+				MessageBox.Show("Данные успешно изменены");
+			}
+			catch
+			{
+				MessageBox.Show("Неверные данные\nИли такие данные существуют");
+			}
 		}
 	}
 }

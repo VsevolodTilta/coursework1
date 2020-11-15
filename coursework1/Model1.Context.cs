@@ -19,7 +19,10 @@ namespace coursework1
             : base("name=coursework1")
         {
         }
-    
+       // public coursework1(string g)
+       //     : base(g)
+       // {
+       // }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();

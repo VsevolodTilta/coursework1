@@ -46,7 +46,7 @@ namespace coursework1
 			}
 			catch
 			{
-				MessageBox.Show("Неверные данные");
+				MessageBox.Show("Неверные данные\nИли такие данные существуют");
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace coursework1
 			}
 			catch
 			{
-				MessageBox.Show("Неверные данные");
+				MessageBox.Show("Неверные данные\nИли такие данные существуют");
 			}	
 		}
 	}

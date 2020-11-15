@@ -10,4 +10,5 @@ namespace coursework1
 	{
 		public static coursework1 coursework { get; } = new coursework1();
 	}
+	
 }

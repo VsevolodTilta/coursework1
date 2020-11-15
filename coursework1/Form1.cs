@@ -18,12 +18,14 @@ namespace coursework1
 	{
 
 		private string currentTable;
-
 		public FormDatabase()
 		{
 			InitializeComponent();
 		}
-
+		public FormDatabase(string f)
+		{
+			InitializeComponent();
+		}
 		private void buttonStorage_Click(object sender, EventArgs e)
 		{
 			currentTable = "Склад";
@@ -39,30 +41,30 @@ namespace coursework1
 		private void buttonProvid_Click(object sender, EventArgs e)
 		{
 			currentTable = "Поставщики";
-			Database.DataSource = (from p in DBconnect.coursework.provider select new { p.id, p.name, p.contract_date, p.contact}).ToList();
+			Database.DataSource = (from p in DBconnect.coursework.provider select new { p.id, p.name, p.contract_date, p.contact }).ToList();
 		}
 
 		private void buttonContact_Click(object sender, EventArgs e)
 		{
 			currentTable = "Контакты";
-			Database.DataSource = (from c in DBconnect.coursework.contact select new { c.id, c.telephone, c.adress}).ToList();
+			Database.DataSource = (from c in DBconnect.coursework.contact select new { c.id, c.telephone, c.adress }).ToList();
 		}
 
 		private void Database_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-		{	
+		{
 
 			if (e.RowIndex < 0) { return; }
-			switch (currentTable) 
+			switch (currentTable)
 			{
-				case "Контакты": 
+				case "Контакты":
 					{
 						Database.DataSource = (from c in DBconnect.coursework.contact select new { c.id, c.telephone, c.adress }).ToList();
 						contact k = DBconnect.coursework.contact.Find(Convert.ToInt32(Database.Rows[e.RowIndex].Cells[0].Value));
 						FormContact m = new FormContact(k);
 						m.ShowDialog();
-						break; 
+						break;
 					}
-				case "Склад": 
+				case "Склад":
 					{
 						Database.DataSource = (from s in DBconnect.coursework.storage select new { s.id, s.name, s.name_type, s.provider_name, s.amount }).ToList();
 						storage o = DBconnect.coursework.storage.Find(Convert.ToInt32(Database.Rows[e.RowIndex].Cells[0].Value));
@@ -70,7 +72,7 @@ namespace coursework1
 						f.ShowDialog();
 						break;
 					}
-				case "Типы продуктов": 
+				case "Типы продуктов":
 					{
 						Database.DataSource = (from t in DBconnect.coursework.type_product select new { t.id, t.type }).ToList();
 						type_product g = DBconnect.coursework.type_product.Find(Convert.ToInt32(Database.Rows[e.RowIndex].Cells[0].Value));
@@ -78,7 +80,7 @@ namespace coursework1
 						h.ShowDialog();
 						break;
 					}
-				case "Поставщики": 
+				case "Поставщики":
 					{
 						Database.DataSource = (from p in DBconnect.coursework.provider select new { p.id, p.name, p.contract_date, p.contact }).ToList();
 						provider j = DBconnect.coursework.provider.Find(Convert.ToInt32(Database.Rows[e.RowIndex].Cells[0].Value));
@@ -88,30 +90,30 @@ namespace coursework1
 					}
 			}
 		}
-	
+
 		private void btnUI_Click_1(object sender, EventArgs e)
 		{
 			switch (currentTable)
 			{
-				case "Контакты": 
+				case "Контакты":
 					{
 						FormContact f = new FormContact();
 						f.Show();
 						break;
 					}
-				case "Склад": 
+				case "Склад":
 					{
 						FStorage f = new FStorage();
 						f.ShowDialog();
 						break;
 					}
-				case "Типы продуктов": 
+				case "Типы продуктов":
 					{
 						FormType f = new FormType();
 						f.ShowDialog();
 						break;
 					}
-				case "Поставщики": 
+				case "Поставщики":
 					{
 						FormProvider f = new FormProvider();
 						f.ShowDialog();
@@ -122,82 +124,100 @@ namespace coursework1
 
 		private void btnDel_Click(object sender, EventArgs e)
 		{
-			string d = buttonStorage.Text;
-			if (d == "Склад")
+			switch (currentTable)
 			{
-				using (coursework1 f = new coursework1())
-				{
-					storage storage = f.storage.Where(g => g.id == numDel.Value).FirstOrDefault();
-					if (storage == null)
+				case "Склад":
 					{
-						MessageBox.Show("Такие данные отсутсвуют");
+						storage storage = DBconnect.coursework.storage.AsEnumerable().Where(g => g.id == Convert.ToInt32(tBDel.Text)).FirstOrDefault();
+						if (storage == null)
+						{
+							MessageBox.Show("Такие данные отсутсвуют");
+						}
+						else
+						{
+							DBconnect.coursework.storage.Remove(storage);
+							DBconnect.coursework.SaveChanges();
+							MessageBox.Show("Данные удалены и сохранены");
+						}
+						break;
 					}
-					else
-					{
-						f.storage.Remove(storage);
-						f.SaveChanges();
-						MessageBox.Show("Данные удалены и сохранены");
-					}
-				}
-			}
 
-			string t = buttonContact.Text;
-			if (t == "Контакты поставщика")
-			{
-				using (coursework1 f = new coursework1())
-				{
-					contact contact = f.contact.Where(g => g.id == numDel.Value).FirstOrDefault();
-					if (contact == null)
+				case "Типы продуктов":
 					{
-						MessageBox.Show("Такие данные отсутсвуют");
+						type_product type_product = DBconnect.coursework.type_product.AsEnumerable().Where(g => g.id == int.Parse(tBDel.Text)).FirstOrDefault();
+						if (type_product == null)
+						{
+							MessageBox.Show("Такие данные отсутсвуют");
+						}
+						else
+						{
+							DBconnect.coursework.type_product.Remove(type_product);
+							DBconnect.coursework.SaveChanges();
+							MessageBox.Show("Данные удалены и сохранены");
+						}
+						break;
 					}
-					else
-					{
-						f.contact.Remove(contact);
-						f.SaveChanges();
-						MessageBox.Show("Данные были удалены и сохранены");
-					}
-				}
-			}
 
-			string h = buttonStorage.Text;
-			if (h == "Типы продуктов")
-			{
-				using (coursework1 f = new coursework1())
-				{
-					type_product type_product = f.type_product.Where(g => g.id == numDel.Value).FirstOrDefault();
-					if (type_product == null)
+				case "Поставщики":
 					{
-						MessageBox.Show("Такие данные отсутсвуют");
+						provider provider = DBconnect.coursework.provider.AsEnumerable().Where(g => g.id == int.Parse(tBDel.Text)).FirstOrDefault();
+						if (provider == null)
+						{
+							MessageBox.Show("Такие данные отсутсвуют");
+						}
+						else
+						{
+							DBconnect.coursework.provider.Remove(provider);
+							DBconnect.coursework.SaveChanges();
+							MessageBox.Show("Данные удалены и сохранены");
+						}
+						break;
 					}
-					else
+				case "Контакты":
 					{
-						f.type_product.Remove(type_product);
-						f.SaveChanges();
-						MessageBox.Show("Данные удалены и сохранены");
+						contact contact = DBconnect.coursework.contact.AsEnumerable().Where(g => g.id == int.Parse(tBDel.Text)).FirstOrDefault();
+						if (contact == null)
+						{
+							MessageBox.Show("Такие данные отсутсвуют");
+						}
+						else
+						{
+							DBconnect.coursework.contact.Remove(contact);
+							DBconnect.coursework.SaveChanges();
+							MessageBox.Show("Данные были удалены и сохранены");
+						}
+						break;
 					}
-				}
-			}
-
-			string s = buttonStorage.Text;
-			if (s == "Поставщики")
-			{
-				using (coursework1 f = new coursework1())
-				{
-					provider provider = f.provider.Where(g => g.id == numDel.Value).FirstOrDefault();
-					if (provider == null)
-					{
-						MessageBox.Show("Такие данные отсутсвуют");
-					}
-					else
-					{
-						f.provider.Remove(provider);
-						f.SaveChanges();
-						MessageBox.Show("Данные удалены и сохранены");
-					}
-				}
 			}
 		}
 
+		private void Database_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+			{
+				switch (currentTable)
+				{
+					case "Контакты":
+						{
+							tBDel.Text = Database.Rows[e.RowIndex].Cells[0].Value.ToString();
+							break;
+						}
+					case "Склад":
+						{
+							tBDel.Text = Database.Rows[e.RowIndex].Cells[0].Value.ToString();
+							break;
+						}
+					case "Типы продуктов":
+						{
+							tBDel.Text = Database.Rows[e.RowIndex].Cells[0].Value.ToString();
+							break;
+						}
+					case "Поставщики":
+						{
+							tBDel.Text = Database.Rows[e.RowIndex].Cells[0].Value.ToString();
+							break;
+						}
+				}
+			}
+		
 	}
+
 }

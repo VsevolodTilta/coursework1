@@ -49,7 +49,7 @@ namespace coursework1
 			}
 			catch
 			{
-				MessageBox.Show("Неверные данные");
+				MessageBox.Show("Неверные данные или \n такие данные уже существуют");
 			}
 		}
 
@@ -64,6 +64,7 @@ namespace coursework1
 					MessageBox.Show("Такого объекта нет!");
 				}
 
+				
 				tBName.Text = sd.name;
 				tBType.Text = sd.name_type.ToString();
 				tBProvide.Text = sd.provider_name.ToString();
@@ -83,15 +84,22 @@ namespace coursework1
 				MessageBox.Show("Вы еще не нашли объект");
 				return;
 			}
+			try
+			{ 
+				storage sd = DBconnect.coursework.storage.Find(chanhable.id);
+				sd.name = tBName.Text;
+				sd.name_type = int.Parse(tBType.Text);
+				sd.provider_name = int.Parse(tBProvide.Text);
+				sd.amount = (int)numAmount.Value;
+				DBconnect.coursework.SaveChanges();
 
-			storage sd = DBconnect.coursework.storage.Find(chanhable.id);
-			sd.name = tBName.Text;
-			sd.name_type = int.Parse(tBType.Text);
-			sd.provider_name = int.Parse(tBProvide.Text);
-			sd.amount = (int)numAmount.Value;
-			DBconnect.coursework.SaveChanges();
-
-			chanhable = null;
+				chanhable = null;
+				MessageBox.Show("Данные изменены");
+			}
+			catch
+			{
+				MessageBox.Show("Неверные данные или \n такие данные уже существуют");
+			}
 		}
 	}
 }
